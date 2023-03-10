@@ -14,4 +14,5 @@
                       [{:available true, :name "available=yes", :price 1}
                        {:available false, :name "available=no", :price "0"}]}))]
     (is (re-find #"available=yes" actual))
+    (is (re-find #"&lt;blink&gt;" actual))
     (is (not (re-find #"available=no" actual)))))
