@@ -2,3 +2,5 @@ tasks:
   - init: |
       sudo curl -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
       sudo chmod +x /usr/local/bin/lein
+      sudo curl -L -o /usr/local/bin/zprint https://github.com/kkinnear/zprint/releases/download/1.2.5/zprintl-1.2.5
+      sudo chmod +x /usr/local/bin/zprint
