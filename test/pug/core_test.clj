@@ -1,6 +1,6 @@
-(ns pug4clj.core-test
+(ns pug.core-test
   (:require [clojure.test :refer :all]
-            [pug4clj.core :refer :all]))
+            [pug.core :refer :all]))
 
 (deftest html-test
   (let [html (render)]

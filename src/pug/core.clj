@@ -1,4 +1,4 @@
-(ns pug4clj.core
+(ns pug.core
   (:require [clojure.java.io :as io]
             [clojure.walk :refer [stringify-keys]])
   (:import (de.neuland.pug4j PugConfiguration)
