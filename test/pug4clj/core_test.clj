@@ -13,17 +13,20 @@
         (.getLastModified (.openConnection (io/resource name))))
       (getReader [_ name] (io/reader (io/resource name)))))
 
-(deftest html-test
+(defn render
+  []
   (let [config (doto (PugConfiguration.)
-                 (.setTemplateLoader resource-template-loader))
-        html (.renderTemplate
-               config
-               (.getTemplate config "index.pug")
-               (stringify-keys
-                 {:pageName "list of <blink>books</blink>",
-                  :books
-                    [{:available true, :name "available=yes", :price 1}
-                     {:available false, :name "available=no", :price "0"}]}))]
+                 (.setTemplateLoader resource-template-loader))]
+    (.renderTemplate
+      config
+      (.getTemplate config "index.pug")
+      (stringify-keys
+        {:pageName "list of <blink>books</blink>",
+         :books [{:available true, :name "available=yes", :price 1}
+                 {:available false, :name "available=no", :price "0"}]}))))
+
+(deftest html-test
+  (let [html (render)]
     (is (re-find #"available=yes" html))
     (is (re-find #"&lt;blink&gt;" html))
     (is (not (re-find #"available=no" html)))))
