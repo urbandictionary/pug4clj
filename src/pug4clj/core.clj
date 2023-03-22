@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.walk :refer [stringify-keys]])
   (:import (de.neuland.pug4j PugConfiguration)
-           (de.neuland.pug4j.template TemplateLoader)))
+           (de.neuland.pug4j.template TemplateLoader))
+  (:gen-class))
 
 (def resource-template-loader
   (reify
