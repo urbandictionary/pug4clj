@@ -3,13 +3,19 @@
             [pug4clj.core :refer :all]
             [clojure.java.io :as io]
             [clojure.walk :refer [stringify-keys]])
-  (:import (de.neuland.pug4j PugConfiguration)))
+  (:import (de.neuland.pug4j PugConfiguration)
+           (de.neuland.pug4j.template TemplateLoader)))
 
 (deftest a-test
-  (let [config (PugConfiguration.)
+  (let [config (doto (PugConfiguration.)
+                 (.setTemplateLoader  (reify TemplateLoader
+                                        (getLastModified [_ name]
+                                          (.getLastModified (.openConnection (io/resource name))))
+                                        (getReader [_ name]
+                                          (io/reader (io/resource name))))))
         actual (.renderTemplate
                 config
-                (.getTemplate config "resources/index.pug")
+                (.getTemplate config "index.pug")
                 (stringify-keys
                  {:pageName "list of <blink>books</blink>",
                   :books
