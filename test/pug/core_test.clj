@@ -1,6 +1,7 @@
 (ns pug.core-test
-  (:require [clojure.test :refer :all]
-            [pug.core :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [pug.core :refer [render config]]
+            [clojure.java.io :as io]))
 
 (deftest html-test
   (let [actual (render
@@ -20,3 +21,6 @@
       (is (re-find #"Welcome to My Website" actual))
       (is (re-find #"Sidebar" actual))
       (is (re-find #"http://www.w3.org/2000/svg" actual)))))
+
+(deftest io-test
+  (is (nil? (io/resource "asdf"))))
