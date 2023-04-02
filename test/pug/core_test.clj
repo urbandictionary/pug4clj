@@ -14,4 +14,8 @@
     (is (re-find #"&lt;blink&gt;" actual))
     (is (not (re-find #"available=no" actual)))))
 
-(deftest complex-test (render (config) "complex/index.pug" {}))
+(deftest complex-test
+  (testing "layouts and includes work"
+    (let [actual (render (config) "complex/index.pug" {})]
+      (is (re-find #"Welcome to My Website" actual))
+      (is (re-find #"Sidebar" actual)))))
