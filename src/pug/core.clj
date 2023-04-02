@@ -11,9 +11,12 @@
       (getExtension [_] "pug")
       (getLastModified [_ name]
         (let [resource (io/resource name)]
-          (assert resource)
+          (assert resource (str "Resource not found: " name))
           (.getLastModified (.openConnection resource))))
-      (getReader [_ name] (io/reader (io/resource name)))))
+      (getReader [_ name]
+        (let [resource (io/resource name)]
+          (assert resource (str "Resource not found: " name))
+          (io/reader resource)))))
 
 (defn config
   []
