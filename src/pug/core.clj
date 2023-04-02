@@ -2,8 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.walk :refer [stringify-keys]])
   (:import (de.neuland.pug4j PugConfiguration)
-           (de.neuland.pug4j.template TemplateLoader))
-  (:gen-class))
+           (de.neuland.pug4j.template TemplateLoader)))
 
 (def resource-template-loader
   (reify
@@ -21,5 +20,3 @@
 (defn render
   [config name model]
   (.renderTemplate config (.getTemplate config name) (stringify-keys model)))
-
-(defn -main [& [name]] (println (render (config) name {:books []})))
