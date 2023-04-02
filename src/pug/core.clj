@@ -17,14 +17,13 @@
     (.setTemplateLoader resource-template-loader)))
 
 (defn render
-  []
-  (let [config (config)]
-    (.renderTemplate
-      config
-      (.getTemplate config "test.pug")
-      (stringify-keys
-        {:pageName "list of <blink>books</blink>",
-         :books [{:available true, :name "available=yes", :price 1}
-                 {:available false, :name "available=no", :price "0"}]}))))
+  [config]
+  (.renderTemplate
+   config
+   (.getTemplate config "test.pug")
+   (stringify-keys
+    {:pageName "list of <blink>books</blink>",
+     :books [{:available true, :name "available=yes", :price 1}
+             {:available false, :name "available=no", :price "0"}]})))
 
 (defn -main [& args] (println (render)))
