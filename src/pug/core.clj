@@ -8,6 +8,8 @@
 (def resource-template-loader
   (reify
     TemplateLoader
+      (getBase [_] "")
+      (getExtension [_] "pug")
       (getLastModified [_ name]
         (.getLastModified (.openConnection (io/resource name))))
       (getReader [_ name] (io/reader (io/resource name)))))

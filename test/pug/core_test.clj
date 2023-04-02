@@ -9,3 +9,5 @@
     (is (re-find #"available=yes" (render (config) "test.pug" model)))
     (is (re-find #"&lt;blink&gt;" (render (config) "test.pug" model)))
     (is (not (re-find #"available=no" (render (config) "test.pug" model))))))
+
+(deftest complex-test (render (config) "complex/index.pug" {}))
