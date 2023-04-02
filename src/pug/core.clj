@@ -18,7 +18,7 @@
                  (.setTemplateLoader resource-template-loader))]
     (.renderTemplate
       config
-      (.getTemplate config "index.pug")
+      (.getTemplate config "test.pug")
       (stringify-keys
         {:pageName "list of <blink>books</blink>",
          :books [{:available true, :name "available=yes", :price 1}
