@@ -1,9 +1,9 @@
 doctype html
 html
   head
-    title= pageName
+    title= page_name
   body
     ol#books
       for book in books
         if book.available
-          li #{book['name-of-book']} for #{book.price} €
+          li #{book.name_of_book} for #{book.price} €
