@@ -12,10 +12,13 @@
         (.getLastModified (.openConnection (io/resource name))))
       (getReader [_ name] (io/reader (io/resource name)))))
 
+(defn config []
+  (doto (PugConfiguration.)
+    (.setTemplateLoader resource-template-loader)))
+
 (defn render
   []
-  (let [config (doto (PugConfiguration.)
-                 (.setTemplateLoader resource-template-loader))]
+  (let [config (config)]
     (.renderTemplate
       config
       (.getTemplate config "test.pug")
