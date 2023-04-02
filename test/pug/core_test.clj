@@ -18,4 +18,5 @@
   (testing "layouts and includes work"
     (let [actual (render (config) "complex/index.pug" {})]
       (is (re-find #"Welcome to My Website" actual))
-      (is (re-find #"Sidebar" actual)))))
+      (is (re-find #"Sidebar" actual))
+      (is (re-find #"http://www.w3.org/2000/svg" actual)))))
