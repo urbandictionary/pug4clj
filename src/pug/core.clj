@@ -12,18 +12,12 @@
         (.getLastModified (.openConnection (io/resource name))))
       (getReader [_ name] (io/reader (io/resource name)))))
 
-(defn config []
-  (doto (PugConfiguration.)
-    (.setTemplateLoader resource-template-loader)))
+(defn config
+  []
+  (doto (PugConfiguration.) (.setTemplateLoader resource-template-loader)))
 
 (defn render
-  [config]
-  (.renderTemplate
-   config
-   (.getTemplate config "test.pug")
-   (stringify-keys
-    {:pageName "list of <blink>books</blink>",
-     :books [{:available true, :name "available=yes", :price 1}
-             {:available false, :name "available=no", :price "0"}]})))
+  [config name model]
+  (.renderTemplate config (.getTemplate config name) (stringify-keys model)))
 
 (defn -main [& args] (println (render)))
