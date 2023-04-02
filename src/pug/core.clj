@@ -22,4 +22,4 @@
   [config name model]
   (.renderTemplate config (.getTemplate config name) (stringify-keys model)))
 
-(defn -main [& args] (println (render)))
+(defn -main [& [name]] (println (render (config) name {:books []})))
