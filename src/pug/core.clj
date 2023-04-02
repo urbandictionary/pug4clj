@@ -10,7 +10,9 @@
       (getBase [_] "")
       (getExtension [_] "pug")
       (getLastModified [_ name]
-        (.getLastModified (.openConnection (io/resource name))))
+        (let [resource (io/resource name)]
+          (assert resource)
+          (.getLastModified (.openConnection resource))))
       (getReader [_ name] (io/reader (io/resource name)))))
 
 (defn config
