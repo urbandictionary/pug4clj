@@ -32,9 +32,10 @@
   [string]
   (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
     (spit file string)
-    (try (render (config)
-                 (str "tmp/" (.getName file))
-                 {:value "MyValue", :kw :My-Keyword})
+    (try (render
+           (config)
+           (str "tmp/" (.getName file))
+           {:value "MyValue", :kw :My-Keyword, :deep-map {:deep-value 10}})
          (finally (.delete file)))))
 
 (deftest render-test
@@ -50,7 +51,9 @@
   (testing "interpolation"
     (is (= "<p id=\"x-MyValue\">asdf</p>"
            (render-pug "p(id=`x-${value}`) asdf"))))
-  (testing "keywords as input" (is (= "My-Keyword" (render-pug "= kw")))))
+  (testing "keywords as input" (is (= "My-Keyword" (render-pug "= kw"))))
+  (testing "deep map with underscores"
+    (is (= "10" (render-pug "= deep_map.deep_value")))))
 
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
