@@ -11,8 +11,8 @@
             "test.pug"
             {:page_name "list of <blink>books</blink>",
              :books
-               [{:available true, :name_of_book "available=yes", :price 1}
-                {:available false, :name_of_book "available=no", :price "0"}]})]
+               [{:available true, :name-of-book "available=yes", :price 1}
+                {:available false, :name-of-book "available=no", :price "0"}]})]
     (is (re-find #"available=yes" actual))
     (is (re-find #"&lt;blink&gt;" actual))
     (is (not (re-find #"available=no" actual)))))

@@ -35,4 +35,4 @@
 
 (defn render
   [config name model]
-  (.renderTemplate config (.getTemplate config name) (stringify-keys model)))
+  (.renderTemplate config (.getTemplate config name) (pugify-keys model)))
