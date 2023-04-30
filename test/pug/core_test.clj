@@ -30,9 +30,7 @@
   [string]
   (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
     (spit file string)
-    (try (render (config)
-                 (str (.getName (.getParentFile file)) "/" (.getName file))
-                 {:value "MyValue"})
+    (try (render (config) (str "tmp/" (.getName file)) {:value "MyValue"})
          (finally (.delete file)))))
 
 (deftest render-test
