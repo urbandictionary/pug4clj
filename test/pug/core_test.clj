@@ -32,18 +32,19 @@
         resources-path
           (str (.getName (.getParentFile file)) "/" (.getName file))]
     (spit file string)
-    (try (render (config) resources-path {:value "MyValue"}) (finally (.delete file)))))
+    (try (render (config) resources-path {:value "MyValue"})
+         (finally (.delete file)))))
 
 (deftest render-test
-  (testing "hello world"
-    (is (= "<p>asdf</p>" (render-pug "p asdf"))))
-  (testing "use variable"
-    (is (= "<p>MyValue</p>" (render-pug "p= value"))))
+  (testing "hello world" (is (= "<p>asdf</p>" (render-pug "p asdf"))))
+  (testing "use variable" (is (= "<p>MyValue</p>" (render-pug "p= value"))))
   (testing "literal attribute"
     (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf"))))
   (testing "expression in attribute"
-    (is (= "<p id=\"yes\">asdf</p>" (render-pug "p(id=true ? 'yes' : 'no') asdf"))))
+    (is (= "<p id=\"yes\">asdf</p>"
+           (render-pug "p(id=true ? 'yes' : 'no') asdf"))))
   (testing "variable as attribute"
     (is (= "<p id=\"MyValue\">asdf</p>" (render-pug "p(id=value) asdf"))))
   (testing "interpolation"
-    (is (= "<p id=\"x-MyValue\">asdf</p>" (render-pug "p(id=`x-${value}`) asdf")))))
+    (is (= "<p id=\"x-MyValue\">asdf</p>"
+           (render-pug "p(id=`x-${value}`) asdf")))))
