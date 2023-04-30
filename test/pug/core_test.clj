@@ -24,3 +24,7 @@
       (is (re-find #"http://www.w3.org/2000/svg" actual)))))
 
 (deftest io-test (is (nil? (io/resource "asdf"))))
+
+(deftest temp-test 
+  (spit "resources/tmp/1.pug" "p asdf")
+  (is (= "<p>asdf</p>" (render (config) "tmp/1.pug" {}))))
