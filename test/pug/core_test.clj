@@ -26,10 +26,12 @@
 
 (deftest io-test (is (nil? (io/resource "asdf"))))
 
-(deftest temp-test
+(defn render-pug
+  [string]
   (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))
         resources-path
           (str (.getName (.getParentFile file)) "/" (.getName file))]
-    (spit file "p asdf")
-    (is (= "<p>asdf</p>" (render (config) resources-path {})))
-    (.delete file)))
+    (spit file string)
+    (try (render (config) resources-path {}) (finally (.delete file)))))
+
+(deftest simple-test (is (= "<p>asdf</p>" (render-pug "p asdf"))))
