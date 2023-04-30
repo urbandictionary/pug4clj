@@ -1,7 +1,8 @@
 (ns pug.core-test
   (:require [clojure.test :refer [deftest is testing]]
             [pug.core :refer [render config]]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+  (:import (java.io File)))
 
 (deftest html-test
   (let [actual
@@ -25,6 +26,10 @@
 
 (deftest io-test (is (nil? (io/resource "asdf"))))
 
-(deftest temp-test 
-  (spit "resources/tmp/1.pug" "p asdf")
-  (is (= "<p>asdf</p>" (render (config) "tmp/1.pug" {}))))
+(deftest temp-test
+  (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))
+        resources-path
+          (str (.getName (.getParentFile file)) "/" (.getName file))]
+    (spit file "p asdf")
+    (is (= "<p>asdf</p>" (render (config) resources-path {})))
+    (.delete file)))
