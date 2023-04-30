@@ -38,4 +38,4 @@
   (is (= "<p>asdf</p>" (render-pug "p asdf")))
   (is (= "<p>MyValue</p>" (render-pug "p= value")))
   (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf")))
-  (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf"))))
+  (is (= "<p id=\"MyValue\">asdf</p>" (render-pug "p(id=value) asdf"))))
