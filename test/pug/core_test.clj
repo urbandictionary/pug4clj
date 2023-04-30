@@ -32,8 +32,10 @@
         resources-path
           (str (.getName (.getParentFile file)) "/" (.getName file))]
     (spit file string)
-    (try (render (config) resources-path {}) (finally (.delete file)))))
+    (try (render (config) resources-path {:value "MyValue"}) (finally (.delete file)))))
 
 (deftest render-test
   (is (= "<p>asdf</p>" (render-pug "p asdf")))
+  (is (= "MyValue" (render-pug "p= value")))
+  (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf")))
   (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf"))))
