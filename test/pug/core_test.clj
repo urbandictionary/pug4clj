@@ -36,6 +36,6 @@
 
 (deftest render-test
   (is (= "<p>asdf</p>" (render-pug "p asdf")))
-  (is (= "MyValue" (render-pug "p= value")))
+  (is (= "<p>MyValue</p>" (render-pug "p= value")))
   (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf")))
   (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf"))))
