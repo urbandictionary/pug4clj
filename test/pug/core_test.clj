@@ -34,4 +34,6 @@
     (spit file string)
     (try (render (config) resources-path {}) (finally (.delete file)))))
 
-(deftest simple-test (is (= "<p>asdf</p>" (render-pug "p asdf"))))
+(deftest render-test
+  (is (= "<p>asdf</p>" (render-pug "p asdf")))
+  (is (= "<p class=\"foo\">asdf</p>" (render-pug "p(class='foo') asdf"))))
