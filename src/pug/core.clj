@@ -19,15 +19,16 @@
           (assert resource (str "Resource not found: " name))
           (io/reader resource)))))
 
-(defn pugify-keys
+(defn pug-data
   [m]
-  (walk/postwalk (fn [x]
-                   (if (map? x)
-                     (->> x
-                          (map (fn [[k v]] [(str/replace (name k) #"-" "_") v]))
-                          (into {}))
-                     x))
-                 m))
+  (->> m
+       (walk/postwalk #(if (keyword? %) (name %) %))
+       (walk/postwalk (fn [x]
+                        (if (map? x)
+                          (->> x
+                               (map (fn [[k v]] [(str/replace k #"-" "_") v]))
+                               (into {}))
+                          x)))))
 
 (defn config
   []
@@ -35,4 +36,4 @@
 
 (defn render
   [config name model]
-  (.renderTemplate config (.getTemplate config name) (pugify-keys model)))
+  (.renderTemplate config (.getTemplate config name) (pug-data model)))

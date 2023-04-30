@@ -1,6 +1,6 @@
 (ns pug.core-test
   (:require [clojure.test :refer [deftest is testing]]
-            [pug.core :refer [render config pugify-keys]]
+            [pug.core :refer [render config pug-data]]
             [clojure.java.io :as io])
   (:import (java.io File)))
 
@@ -49,9 +49,11 @@
     (is (= "<p id=\"x-MyValue\">asdf</p>"
            (render-pug "p(id=`x-${value}`) asdf")))))
 
-(deftest test-pugify-keys
-  (let [test-map {:a-b {:c-d {:e-f 42}, :z "hello"},
-                  "x-y" {:p-q {:r-s "world"}}}
-        expected {"a_b" {"c_d" {"e_f" 42}, "z" "hello"},
-                  "x_y" {"p_q" {"r_s" "world"}}}]
-    (is (= (pugify-keys test-map) expected))))
+(deftest test-pug-data
+  (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
+  (testing "simple" (is (= {"x" "asdf"} (pug-data {:x :asdf}))))
+  (testing "recursive"
+    (is (= {"a_b" {"c_d" {"e_f" 42}, "z" "hello"},
+            "x_y" {"p_q" {"r_s" "world"}}}
+           (pug-data {:a-b {:c-d {:e-f 42}, :z "hello"},
+                      "x-y" {:p-q {:r-s "world"}}})))))
