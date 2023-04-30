@@ -24,7 +24,9 @@
       (is (re-find #"Sidebar" actual))
       (is (re-find #"http://www.w3.org/2000/svg" actual)))))
 
-(deftest io-test (is (nil? (io/resource "asdf"))))
+(deftest io-test
+  (testing "io/resource returns nil when a resource isn't found"
+    (is (nil? (io/resource "asdf")))))
 
 (defn render-pug
   [string]
