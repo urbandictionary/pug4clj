@@ -1,6 +1,6 @@
 (ns pug.core-test
   (:require [clojure.test :refer [deftest is testing]]
-            [pug.core :refer [render config]]
+            [pug.core :refer [render config pugify-keys]]
             [clojure.java.io :as io])
   (:import (java.io File)))
 
@@ -48,3 +48,10 @@
   (testing "interpolation"
     (is (= "<p id=\"x-MyValue\">asdf</p>"
            (render-pug "p(id=`x-${value}`) asdf")))))
+
+(deftest test-pugify-keys
+  (let [test-map {:a-b {:c-d {:e-f 42}, :z "hello"},
+                  "x-y" {:p-q {:r-s "world"}}}
+        expected {"a_b" {"c_d" {"e_f" 42}, "z" "hello"},
+                  "x_y" {"p_q" {"r_s" "world"}}}]
+    (is (= (pugify-keys test-map) expected))))

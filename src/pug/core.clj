@@ -1,6 +1,7 @@
 (ns pug.core
   (:require [clojure.java.io :as io]
-            [clojure.walk :refer [stringify-keys]])
+            [clojure.walk :as walk]
+            [clojure.string :as str])
   (:import (de.neuland.pug4j PugConfiguration)
            (de.neuland.pug4j.template TemplateLoader)))
 
@@ -17,6 +18,16 @@
         (let [resource (io/resource name)]
           (assert resource (str "Resource not found: " name))
           (io/reader resource)))))
+
+(defn pugify-keys
+  [m]
+  (walk/postwalk (fn [x]
+                   (if (map? x)
+                     (->> x
+                          (map (fn [[k v]] [(str/replace (name k) #"-" "_") v]))
+                          (into {}))
+                     x))
+                 m))
 
 (defn config
   []
