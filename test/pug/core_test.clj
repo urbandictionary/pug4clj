@@ -28,11 +28,11 @@
 
 (defn render-pug
   [string]
-  (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))
-        resources-path
-          (str (.getName (.getParentFile file)) "/" (.getName file))]
+  (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
     (spit file string)
-    (try (render (config) resources-path {:value "MyValue"})
+    (try (render (config)
+                 (str (.getName (.getParentFile file)) "/" (.getName file))
+                 {:value "MyValue"})
          (finally (.delete file)))))
 
 (deftest render-test
