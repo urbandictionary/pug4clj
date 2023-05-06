@@ -27,17 +27,16 @@
 
 (defn pug-data
   [input]
-  (->> input
-       (walk/postwalk
-         (fn [form]
-           (if (map? form)
-             (->> form
-                  (map (fn [[key value]] [(-> key
-                                              (kw->string "__")
-                                              (str/replace #"-" "_")) value]))
-                  (into {}))
-             form)))
-       (walk/postwalk #(kw->string % "/"))))
+  (walk/postwalk (fn [form]
+                   (if (map? form)
+                     (->> form
+                          (map (fn [[key value]] [(-> key
+                                                      (kw->string "__")
+                                                      (str/replace #"-" "_"))
+                                                  (kw->string value "/")]))
+                          (into {}))
+                     form))
+                 input))
 
 (defn config
   []
