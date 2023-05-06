@@ -58,6 +58,9 @@
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
   (testing "simple" (is (= {"x" "asdf"} (pug-data {:x :asdf}))))
+  (testing "namespaced keyword"
+    (is (= {"my_ns/a_b_c" "your-ns/d-e-f"}
+           (pug-data {:my-ns/a-b-c :your-ns/d-e-f}))))
   (testing "recursive"
     (is (= {"a_b" {"c_d" {"e_f" 42}, "z" "hello"},
             "x_y" {"p_q" {"r_s" "world"}}}

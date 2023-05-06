@@ -22,7 +22,10 @@
 (defn pug-data
   [m]
   (->> m
-       (walk/postwalk #(if (keyword? %) (name %) %))
+       (walk/postwalk
+         #(if (keyword? %)
+            (if (namespace %) (str (namespace %) "/" (name %)) (name %))
+            %))
        (walk/postwalk (fn [x]
                         (if (map? x)
                           (->> x
