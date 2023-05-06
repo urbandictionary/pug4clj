@@ -19,19 +19,25 @@
           (assert resource (str "Resource not found: " name))
           (io/reader resource)))))
 
+(defn kw->string
+  [delimiter kw]
+  (if (keyword? kw)
+    (if (namespace kw) (str (namespace kw) delimiter (name kw)) (name kw))
+    kw))
+
 (defn pug-data
-  [m]
-  (->> m
-       (walk/postwalk
-         #(if (keyword? %)
-            (if (namespace %) (str (namespace %) "/" (name %)) (name %))
-            %))
-       (walk/postwalk (fn [x]
-                        (if (map? x)
-                          (->> x
-                               (map (fn [[k v]] [(str/replace k #"-" "_") v]))
+  [input]
+  (->> input
+       (walk/postwalk (fn [form]
+                        (if (map? form)
+                          (->> form
+                               (map (fn [[key value]] [(str/replace
+                                                         (kw->string "__" key)
+                                                         #"-"
+                                                         "_") value]))
                                (into {}))
-                          x)))))
+                          form)))
+       (walk/postwalk (partial kw->string "/"))))
 
 (defn config
   []
