@@ -1,0 +1,40 @@
+name: Clojure Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Cache Leiningen dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/project.clj') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Install Leiningen
+      run: |
+        curl -s https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
+        chmod +x lein
+        sudo mv lein /usr/local/bin/
+
+    - name: Run tests
+      run: lein test
