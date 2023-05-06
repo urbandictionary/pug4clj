@@ -5,3 +5,6 @@ test-jar:
 
 deploy:
 	lein deploy clojars
+
+format:
+	find . -name \*.clj | xargs zprint -w
