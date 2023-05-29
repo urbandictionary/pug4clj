@@ -53,7 +53,8 @@
            (render-pug "p(id=`x-${value}`) asdf"))))
   (testing "keywords as input" (is (= "My-Keyword" (render-pug "= kw"))))
   (testing "deep map with underscores"
-    (is (= "10" (render-pug "= deep_map.deep_value")))))
+    (is (= "10" (render-pug "= deep_map.deep_value")))
+  (testing "hello world" (is (re-find #"deep_map=" (render-pug "= locals"))))))
 
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
