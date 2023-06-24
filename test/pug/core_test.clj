@@ -62,7 +62,8 @@
   (is (= "<p x=\"1\"></p><p x=\"2\"></p><p x=\"3\"></p>"
          (render-pug "for i in [1, 2, 3]\n  p(x=i)")))
   (is (= "<p x=\"i is 1\"></p><p x=\"i is 2\"></p><p x=\"i is 3\"></p>"
-         (render-pug "for i in [1, 2, 3]\n  p(x=`i is ${i}`)"))))
+         (render-pug "for i in [1, 2, 3]\n  p(x=`i is ${i}`)")))
+  (is (= "0a1b2c" (render-pug "for x, i in ['a', 'b', 'c']\n  = i\n  = x"))))
 
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
