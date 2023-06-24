@@ -54,7 +54,13 @@
   (testing "keywords as input" (is (= "My-Keyword" (render-pug "= kw"))))
   (testing "deep map with underscores"
     (is (= "10" (render-pug "= deep_map.deep_value")))
-  (testing "hello world" (is (re-find #"deep_map=" (render-pug "= locals"))))))
+    (testing "hello world"
+      (is (re-find #"deep_map=" (render-pug "= locals"))))))
+
+(deftest loop-test
+  (is (= "123" (render-pug "for i in [1, 2, 3]\n  = i")))
+  (is (= "<p x=\"1\"></p><p x=\"2\"></p><p x=\"3\"></p>"
+         (render-pug "for i in [1, 2, 3]\n  p(x=i)"))))
 
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
