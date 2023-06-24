@@ -8,3 +8,7 @@ deploy:
 
 format:
 	find . -name \*.clj | xargs zprint -w
+
+.PHONY: test
+test:
+	lein test
