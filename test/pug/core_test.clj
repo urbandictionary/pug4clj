@@ -29,14 +29,14 @@
     (is (nil? (io/resource "asdf")))))
 
 (defn render-pug
-  [string]
-  (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
-    (spit file string)
-    (try (render
-           (config)
-           (str "tmp/" (.getName file))
-           {:value "MyValue", :kw :My-Keyword, :deep-map {:deep-value 10}})
-         (finally (.delete file)))))
+  ([string]
+   (render-pug string
+               {:value "MyValue", :kw :My-Keyword, :deep-map {:deep-value 10}}))
+  ([string data]
+   (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
+     (spit file string)
+     (try (render (config) (str "tmp/" (.getName file)) data)
+          (finally (.delete file))))))
 
 (deftest render-test
   (testing "hello world" (is (= "<p>asdf</p>" (render-pug "p asdf"))))
@@ -76,3 +76,13 @@
             "x_y" {"p_q" {"r_s" "world"}}}
            (pug-data {:a-b {:c-d {:e-f 42}, :z "hello"},
                       "x-y" {:p-q {:r-s "world"}}})))))
+
+(deftest conditional-test
+  (is (= "100" (render-pug "= x" {:x 100})))
+  (is (= "true" (render-pug "= x" {:x true})))
+  (is (= "" (render-pug "= x" {:x []})))
+  (is (= "it is empty" (render-pug "if size(x) == 0\n  | it is empty" {:x []})))
+  (is (= "it is empty" (render-pug "if empty(x)\n  | it is empty" {:x []})))
+  (is (= "" (render-pug "if empty(x)\n  | it is empty" {:x [1]})))
+  (is (= "asdf" (render-pug "- var x = \"asdf\"\n= x" {})))
+  (is (= "less" (render-pug "- var x = 5\nif x < 10\n | less" {}))))
