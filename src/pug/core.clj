@@ -31,8 +31,7 @@
                    (if (map? form)
                      (->> form
                           (map (fn [[key value]] [(-> key
-                                                      (kw->string "__")
-                                                      (str/replace #"-" "_"))
+                                                      (kw->string "__"))
                                                   (kw->string value "/")]))
                           (into {}))
                      form))

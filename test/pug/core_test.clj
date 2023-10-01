@@ -11,8 +11,8 @@
             "test.pug"
             {:page_name "list of <blink>books</blink>",
              :books
-               [{:available true, :name-of-book "available=yes", :price 1}
-                {:available false, :name-of-book "available=no", :price "0"}]})]
+               [{:available true, :name_of_book "available=yes", :price 1}
+                {:available false, :name_of_book "available=no", :price "0"}]})]
     (is (re-find #"available=yes" actual))
     (is (re-find #"&lt;blink&gt;" actual))
     (is (not (re-find #"available=no" actual)))))
@@ -31,7 +31,7 @@
 (defn render-pug
   ([string]
    (render-pug string
-               {:value "MyValue", :kw :My-Keyword, :deep-map {:deep-value 10}}))
+               {:value "MyValue", :kw :My-Keyword, :deep_map {:deep_value 10}}))
   ([string data]
    (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
      (spit file string)
@@ -69,11 +69,11 @@
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
   (testing "simple" (is (= {"x" "asdf"} (pug-data {:x :asdf}))))
   (testing "namespaced keyword"
-    (is (= {"my_ns__a_b_c" "your-ns/d-e-f"}
+    (is (= {"my-ns__a-b-c" "your-ns/d-e-f"}
            (pug-data {:my-ns/a-b-c :your-ns/d-e-f}))))
   (testing "recursive"
-    (is (= {"a_b" {"c_d" {"e_f" 42}, "z" "hello"},
-            "x_y" {"p_q" {"r_s" "world"}}}
+    (is (= {"a-b" {"c-d" {"e-f" 42}, "z" "hello"},
+            "x-y" {"p-q" {"r-s" "world"}}}
            (pug-data {:a-b {:c-d {:e-f 42}, :z "hello"},
                       "x-y" {:p-q {:r-s "world"}}})))))
 
