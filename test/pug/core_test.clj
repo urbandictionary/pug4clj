@@ -43,12 +43,16 @@
              (render (config) (str "tmp/" (.getName file)) data))))
 
 (deftest defaults-test
-  (with-tmp
-    file
-    (spit file "= a")
-    (is (= "123" (render (config {:a 123}) (str "tmp/" (.getName file)) {})))
-    (is (= "456"
-           (render (config {:a 123}) (str "tmp/" (.getName file)) {:a 456})))))
+  (with-tmp file
+            (spit file "= a")
+            (is (= "123"
+                   (render (config {:shared-variables {:a 123}})
+                           (str "tmp/" (.getName file))
+                           {})))
+            (is (= "456"
+                   (render (config {:shared-variables {:a 123}})
+                           (str "tmp/" (.getName file))
+                           {:a 456})))))
 
 (deftest render-test
   (testing "hello world" (is (= "<p>asdf</p>" (render-pug "p asdf"))))

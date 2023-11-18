@@ -39,10 +39,11 @@
 
 (defn config
   ([] (config {}))
-  ([shared-variables]
-   (doto (PugConfiguration.)
-     (.setTemplateLoader resource-template-loader)
-     (.setSharedVariables (pug-data shared-variables)))))
+  ([{:keys [shared-variables]}]
+   (let [c (PugConfiguration.)]
+     (.setTemplateLoader c resource-template-loader)
+     (when shared-variables (.setSharedVariables c (pug-data shared-variables)))
+     c)))
 
 (defn render
   [config name model]
