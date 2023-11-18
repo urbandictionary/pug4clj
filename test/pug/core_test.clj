@@ -28,15 +28,27 @@
   (testing "io/resource returns nil when a resource isn't found"
     (is (nil? (io/resource "asdf")))))
 
+(defmacro with-tmp
+  [file & body]
+  `(let [~file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
+     (try ~@body (finally (.delete ~file)))))
+
 (defn render-pug
   ([string]
    (render-pug string
                {:value "MyValue", :kw :My-Keyword, :deep_map {:deep_value 10}}))
   ([string data]
-   (let [file (File/createTempFile "temp" ".pug" (io/file "resources/tmp"))]
-     (spit file string)
-     (try (render (config) (str "tmp/" (.getName file)) data)
-          (finally (.delete file))))))
+   (with-tmp file
+             (spit file string)
+             (render (config) (str "tmp/" (.getName file)) data))))
+
+(deftest defaults-test
+  (with-tmp
+    file
+    (spit file "= a")
+    (is (= "123" (render (config {:a 123}) (str "tmp/" (.getName file)) {})))
+    (is (= "456"
+           (render (config {:a 123}) (str "tmp/" (.getName file)) {:a 456})))))
 
 (deftest render-test
   (testing "hello world" (is (= "<p>asdf</p>" (render-pug "p asdf"))))

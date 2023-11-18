@@ -38,8 +38,11 @@
                  input))
 
 (defn config
-  []
-  (doto (PugConfiguration.) (.setTemplateLoader resource-template-loader)))
+  ([] (config {}))
+  ([shared-variables]
+   (doto (PugConfiguration.)
+     (.setTemplateLoader resource-template-loader)
+     (.setSharedVariables (pug-data shared-variables)))))
 
 (defn render
   [config name model]
