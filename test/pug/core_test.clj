@@ -65,6 +65,11 @@
          (render-pug "for i in [1, 2, 3]\n  p(x=`i is ${i}`)")))
   (is (= "0a1b2c" (render-pug "for x, i in ['a', 'b', 'c']\n  = i\n  = x"))))
 
+(deftest helpers-test
+  (is (= "123" (render-pug "= a" {:a 123})))
+  (is (= "123" (render-pug "= a()" {:a (constantly 123)})))
+  (is (= "123" (render-pug "= a.b()" {:a {:b (constantly 123)}}))))
+
 (deftest test-pug-data
   (testing "simple" (is (= {"x" 5} (pug-data {:x 5}))))
   (testing "simple" (is (= {"x" "asdf"} (pug-data {:x :asdf}))))
